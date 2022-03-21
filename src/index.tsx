@@ -8,20 +8,34 @@ createServer({
     transaction: Model,
   },
 
+  seeds(server) {
+    server.db.loadData({
+      transactions: [
+        {
+          id: 1,
+          title: 'Desenvolvimento de Site',
+          type: 'deposit',
+          category: 'Desenvolvimento',
+          amount: 15000,
+          createdAt: new Date('2022-01-20')
+        },
+        {
+          id: 2,
+          title: 'Hospedagem',
+          type: 'withdraw',
+          category: 'Infra',
+          amount: 270,
+          createdAt: new Date('2022-01-05')
+        },
+      ]
+    })
+  },
+
   routes() {
     this.namespace = 'api';
 
     this.get('/transactions', () => {
-      return [
-        {
-          id: 1,
-          title: 'Desenvolvimento de Site',
-          amount: 15000,
-          type: 'deposit',
-          category: 'Desenvolvimento',
-          createdAt: new Date(),
-        }
-      ]
+      return this.schema.all('transaction')
     })
 
     this.post('/transactions', (schema, request) => {
